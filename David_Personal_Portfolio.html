@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>John Rey David | Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* General Styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { 
+            line-height: 1.6; 
+            color: #333; 
+            scroll-behavior: smooth; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 10%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        .logo { 
+            font-size: 1.5rem; 
+            font-weight: bold; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-icon {
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+        }
+        
+        /* Hamburger Menu */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+            z-index: 1001;
+        }
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 3px 0;
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 6px);
+        }
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -6px);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 280px;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 30px rgba(0,0,0,0.2);
+            padding: 80px 30px 30px;
+            transition: right 0.3s ease;
+            z-index: 999;
+        }
+        .mobile-menu.active {
+            right: 0;
+        }
+        .mobile-menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 998;
+        }
+        .mobile-menu-overlay.active {
+            display: block;
+        }
+        
+        /* Menu Header with Logo */
+        .menu-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .menu-header .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .menu-header .info h3 {
+            color: #333;
+            font-size: 1.1rem;
+            margin-bottom: 3px;
+        }
+        .menu-header .info p {
+            color: #888;
+            font-size: 0.85rem;
+        }
+        
+        .nav-links { list-style: none; display: flex; }
+        .nav-links li { margin-left: 25px; }
+        .nav-links a { 
+            text-decoration: none; 
+            color: #333; 
+            font-weight: 500; 
+            transition: all 0.3s;
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+        .nav-links a:hover { 
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        /* Mobile Nav Links */
+        .mobile-nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .mobile-nav-links li {
+            margin-bottom: 10px;
+        }
+        .mobile-nav-links a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            border-radius: 15px;
+            transition: all 0.3s;
+        }
+        .mobile-nav-links a:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateX(10px);
+        }
+        .mobile-nav-links a i {
+            width: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        /* Responsive for Mobile */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .menu-toggle {
+                display: flex;
+            }
+            .mobile-menu {
+                display: block;
+            }
+        }
+
+        /* Home Section */
+        #home { 
+            display: flex; 
+            align-items: center; 
+            padding: 150px 10% 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .profile-container {
+            position: relative;
+            margin-right: 60px;
+        }
+        .profile-circle {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 6px solid rgba(255,255,255,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .profile-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .profile-circle .placeholder {
+            font-size: 5rem;
+        }
+        /* Decorative ring */
+        .profile-ring {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border-radius: 50%;
+            border: 3px dashed rgba(255,255,255,0.5);
+            animation: spin 20s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .home-text h1 { 
+            font-size: 3rem; 
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+        }
+        .home-text p { 
+            max-width: 600px; 
+            font-size: 1.2rem; 
+            opacity: 0.9;
+            line-height: 1.8;
+        }
+        .cta-buttons {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+        }
+        .cta-btn {
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .cta-primary {
+            background: white;
+            color: #667eea;
+        }
+        .cta-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .cta-secondary {
+            border: 2px solid white;
+            color: white;
+        }
+        .cta-secondary:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Sections General */
+        section {
+            padding: 80px 10%;
+            min-height: 60vh;
+        }
+        .section-white {
+            background: #fff;
+            border-radius: 20px;
+            margin: 40px 5%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        h2 { 
+            margin-bottom: 30px; 
+            font-size: 2rem; 
+            color: #2c3e50; 
+            border-left: 5px solid #667eea; 
+            padding-left: 15px;
+        }
+
+        /* Skills Section */
+        #skills {
+            background: #fff;
+            margin: 40px 5%;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .skill-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .skill-card:hover {
+            transform: translateY(-5px);
+        }
+        .skill-card i {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        /* Projects Section */
+        #projects {
+            background: #f8f9fa;
+        }
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        .project-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            border-top: 4px solid #667eea;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        .project-card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        /* Contact Section */
+        #contact {
+            background: #fff;
+            margin: 40px 5% 0;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        .contact-icons { 
+            display: flex; 
+            gap: 30px; 
+            margin-top: 20px; 
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .icon-box {
+            text-align: center;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s;
+            padding: 20px;
+        }
+        .icon-box:hover { 
+            transform: translateY(-10px);
+        }
+        .circle-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            font-size: 1.8rem;
+            color: white;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s;
+        }
+        .icon-box:hover .circle-icon {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.6);
+        }
+        .icon-box span {
+            font-weight: 500;
+            color: #555;
+        }
+
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        /* Responsive for Mobile */
+        @media (max-width: 768px) {
+            #home { 
+                flex-direction: column; 
+                text-align: center; 
+                padding: 120px 5% 60px;
+            }
+            .profile-container { 
+                margin: 0 0 30px 0; 
+            }
+            .profile-circle {
+                width: 200px;
+                height: 200px;
+            }
+            .home-text h1 { 
+                font-size: 2rem; 
+            }
+            .nav-links { 
+                margin-top: 15px; 
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .nav-links li { 
+                margin: 5px 10px; 
+            }
+            .section-white, #skills {
+                margin: 20px 3%;
+            }
+            section {
+                padding: 60px 5%;
+            }
+            .contact-icons {
+                gap: 15px;
+            }
+            .circle-icon {
+                width: 65px;
+                height: 65px;
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">
+            <div class="logo-icon"><i class="fas fa-code"></i></div>
+            John Rey David
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#about"><i class="fas fa-user"></i> About</a></li>
+            <li><a href="#skills"><i class="fas fa-cogs"></i> Skills</a></li>
+            <li><a href="#projects"><i class="fas fa-project-diagram"></i> Projects</a></li>
+            <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+        </ul>
+        <!-- Hamburger Menu Button -->
+        <div class="menu-toggle" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay" onclick="toggleMenu()"></div>
+    <div class="mobile-menu">
+        <div class="menu-header">
+            <div class="avatar">JD</div>
+            <div class="info">
+                <h3>John Rey David</h3>
+                <p>Web Developer</p>
+            </div>
+        </div>
+        <ul class="mobile-nav-links">
+            <li><a href="#home" onclick="toggleMenu()"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#about" onclick="toggleMenu()"><i class="fas fa-user"></i> About Me</a></li>
+            <li><a href="#skills" onclick="toggleMenu()"><i class="fas fa-cogs"></i> Skills</a></li>
+            <li><a href="#projects" onclick="toggleMenu()"><i class="fas fa-project-diagram"></i> Projects</a></li>
+            <li><a href="#contact" onclick="toggleMenu()"><i class="fas fa-envelope"></i> Contact</a></li>
+        </ul>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            document.querySelector('.menu-toggle').classList.toggle('active');
+            document.querySelector('.mobile-menu').classList.toggle('active');
+            document.querySelector('.mobile-menu-overlay').classList.toggle('active');
+        }
+    </script>
+
+    <section id="home">
+        <div class="profile-container">
+            <div class="profile-ring"></div>
+            <div class="profile-circle">
+                <img src="https://scontent.fmnl9-7.fna.fbcdn.net/v/t1.15752-9/312010735_548038317084326_156376284511246173_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=0024fc&_nc_eui2=AeGhwnNcevdQz6cdYruqFwSJaFSZvkEF-FhoVJm-QQX4WEhtnKi8IwX1toEpzeIgsQzsD6GaLrhMr-QYokAO8n4-&_nc_ohc=6ZeABfKu3KMQ7kNvwFGeMHT&_nc_oc=AdoBdsclTexkRJYve6uNSfGo4Dm0SzKfRJrM6AHS3pgI_PkXa70R-g8Q_k_Sq4lPERA&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent.fmnl9-7.fna&_nc_ss=7a32e&oh=03_Q7cD4wEHirzOc5xRfVyDa5AFMV954pXK07jLnFnTJ8Z0WzoBUg&oe=69EDE967" 
+                     alt="John Rey David" 
+                     onerror="this.parentElement.innerHTML='<span class=\'placeholder\'>👤</span>'">
+            </div>
+        </div>
+        <div class="home-text">
+            <h1>Hello, I'm John Rey David<br><span style="font-size: 1.5rem; opacity: 0.9;">Full-time Web/Frontend Developer</span></h1>
+            <p>A passionate student web developer diving headfirst into the exciting world of code! I'm dedicated to creating modern, user-friendly, and visually appealing websites.</p>
+            <div class="cta-buttons">
+                <a href="#contact" class="cta-btn cta-primary">Get In Touch</a>
+                <a href="#projects" class="cta-btn cta-secondary">View Projects</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section-white">
+        <h2><i class="fas fa-user-graduate"></i> About Me</h2>
+        <p style="font-size: 1.1rem; line-height: 1.8;">I'm <strong>John Rey David</strong>, a passionate and creative Web/Frontend Developer with a love for Hardware Programming. I'm all about teamwork and integrity in my work, and I'm always looking for new and exciting challenges to push my skills further.</p>
+    </section>
+
+    <section id="skills">
+        <h2><i class="fas fa-lightbulb"></i> My Skills</h2>
+        <div class="skills-grid">
+            <div class="skill-card">
+                <i class="fab fa-python"></i>
+                <h3>Python</h3>
+                <p>Backend development & scripting</p>
+            </div>
+            <div class="skill-card">
+                <i class="fab fa-java"></i>
+                <h3>Java</h3>
+                <p>Object-oriented programming</p>
+            </div>
+            <div class="skill-card">
+                <i class="fas fa-code"></i>
+                <h3>C++</h3>
+                <p>System programming</p>
+            </div>
+            <div class="skill-card">
+                <i class="fas fa-database"></i>
+                <h3>Database</h3>
+                <p>SQL & data management</p>
+            </div>
+            <div class="skill-card">
+                <i class="fas fa-laptop-code"></i>
+                <h3>Web Development</h3>
+                <p>HTML, CSS, JavaScript</p>
+            </div>
+            <div class="skill-card">
+                <i class="fas fa-microchip"></i>
+                <h3>Hardware</h3>
+                <p>Hardware programming</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <h2><i class="fas fa-folder-open"></i> My Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <h3><i class="fas fa-graduation-cap"></i> Capstone</h3>
+                <p>Final year project demonstrating comprehensive web development skills and problem-solving abilities.</p>
+            </div>
+            <div class="project-card">
+                <h3><i class="fas fa-briefcase"></i> Freelance Projects</h3>
+                <p>Various web projects for clients including custom websites and web applications.</p>
+            </div>
+            <div class="project-card">
+                <h3><i class="fas fa-users"></i> Community Projects</h3>
+                <p>Collaborative projects contributing to community development and social causes.</p>
+            </div>
+            <div class="project-card">
+                <h3><i class="fas fa-blog"></i> Personal Projects</h3>
+                <p>Personal projects including blogs, web apps, and experimental side projects.</p>
+            </div>
+            <div class="project-card">
+                <h3><i class="fas fa-shopping-cart"></i> E-Commerce</h3>
+                <p>Online store development with payment integration and inventory management.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2><i class="fas fa-paper-plane"></i> Contact Me</h2>
+        <p style="margin-bottom: 30px; font-size: 1.1rem;">Feel free to reach out to me through any of these platforms:</p>
+        
+        <!-- Contact Info -->
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 15px; margin-bottom: 40px; color: white;">
+            <div style="display: flex; flex-wrap: wrap; gap: 30px; justify-content: center;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;"><i class="fas fa-phone"></i></div>
+                    <div>
+                        <p style="opacity: 0.8; font-size: 0.9rem; margin-bottom: 3px;">Phone</p>
+                        <p style="font-weight: 600;">0964-172-1192</p>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;"><i class="fas fa-map-marker-alt"></i></div>
+                    <div>
+                        <p style="opacity: 0.8; font-size: 0.9rem; margin-bottom: 3px;">Address</p>
+                        <p style="font-weight: 600;">Blk 9 B lot 17 Horacio Dela Costa Homes 2, North Caloocan City</p>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;"><i class="fas fa-envelope"></i></div>
+                    <div>
+                        <p style="opacity: 0.8; font-size: 0.9rem; margin-bottom: 3px;">Email</p>
+                        <p style="font-weight: 600;">jryd24@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="contact-icons">
+            <a href="https://www.linkedin.com/in/johnrey-david-5494813b5/" target="_blank" class="icon-box">
+                <div class="circle-icon"><i class="fab fa-linkedin-in"></i></div>
+                <span>LinkedIn</span>
+            </a>
+            <a href="https://github.com/J-Reyrey" target="_blank" class="icon-box">
+                <div class="circle-icon"><i class="fab fa-github"></i></div>
+                <span>Github</span>
+            </a>
+            <a href="https://www.facebook.com/johnrey.david.315/" target="_blank" class="icon-box">
+                <div class="circle-icon"><i class="fab fa-facebook-f"></i></div>
+                <span>Facebook</span>
+            </a>
+            <a href="mailto:jryd24@gmail.com" class="icon-box">
+                <div class="circle-icon"><i class="fas fa-envelope"></i></div>
+                <span>Gmail</span>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 John Rey David. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
